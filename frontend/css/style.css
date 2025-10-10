@@ -21,10 +21,25 @@ nav a {
   padding: 20px;
 }
 
+.movie-row {
+  display: flex;
+  gap: 20px; /* khoảng cách giữa các phim */
+  flex-wrap: wrap; /* nếu màn hình nhỏ, tự xuống dòng */
+  justify-content: center; /* căn giữa nếu muốn */
+}
+
 .movie-card {
+  width: 250px;
   background: white;
   padding: 15px;
-  margin-bottom: 20px;
   border-radius: 8px;
   box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.movie-card img {
+  width: 100%;         /* Ảnh sẽ co giãn theo khung chứa */
+  max-width: 300px;    /* Không vượt quá 300px */
+  height: auto;        /* Giữ đúng tỉ lệ ảnh */
+  border-radius: 8px;  /* Bo góc nhẹ nếu muốn đẹp hơn */
 }
