@@ -3,7 +3,66 @@ body {
   margin: 0;
   background-color: #f4f4f4;
 }
+/* CSS cho trang đăng nhập */
+.login-container {
+  max-width: 400px;
+  margin: 80px auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
 
+.login-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.login-container label {
+  display: block;
+  text-align: left;
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #222;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-container button:hover {
+  background-color: #444;
+}
+
+.login-note {
+  margin-top: 15px;
+  font-size: 14px;
+}
+.login-note a {
+  color: #007bff;
+  text-decoration: none;
+}
+.login-note a:hover {
+  text-decoration: underline;
+}
+
+/* CSS cho trang danh sách phim */
 header {
   background-color: #222;
   color: white;
@@ -42,4 +101,20 @@ nav a {
   max-width: 300px;    /* Không vượt quá 300px */
   height: auto;        /* Giữ đúng tỉ lệ ảnh */
   border-radius: 8px;  /* Bo góc nhẹ nếu muốn đẹp hơn */
+}
+/* CSS cho trang chi tiết phim */
+.trailer-btn {
+  display: inline-block;
+  margin: 10px 0;
+  padding: 8px 12px;
+  background-color: #e50914;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.trailer-btn:hover {
+  background-color: #b00610;
 }
