@@ -4,6 +4,19 @@ body {
   background-color: #f4f4f4;
 }
 /* CSS cho trang đăng nhập */
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.login-container input {
+  box-sizing: border-box;
+}
+
+.login-container button {
+  margin-top: 10px;
+}
 .login-container {
   max-width: 400px;
   margin: 80px auto;
@@ -63,6 +76,35 @@ body {
 }
 
 /* CSS cho trang danh sách phim */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  gap: 10px;
+}
+
+.search-bar input[type="text"] {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 300px;
+}
+
+.search-bar button {
+  padding: 8px 16px;
+  background-color: #222;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-bar button:hover {
+  background-color: #444;
+}
+
 header {
   background-color: #222;
   color: white;
@@ -102,6 +144,14 @@ nav a {
   height: auto;        /* Giữ đúng tỉ lệ ảnh */
   border-radius: 8px;  /* Bo góc nhẹ nếu muốn đẹp hơn */
 }
+footer {
+  background-color: #222;
+  color: white;
+  text-align: center;
+  padding: 50px;
+  bottom: 0;
+}
+
 /* CSS cho trang chi tiết phim */
 .trailer-btn {
   display: inline-block;
