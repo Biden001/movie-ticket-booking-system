@@ -1,9 +1,8 @@
-CREATE TABLE movies (
+CREATE TABLE movies_info (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    title NVARCHAR(255) NOT NULL,
-    poster_url NVARCHAR(500),
+    title NVARCHAR(200) NOT NULL,
     genre NVARCHAR(100),
-    description NVARCHAR(MAX),
-    release_date DATE,
+    poster_url NVARCHAR(500),
+    synopsis NVARCHAR(1000), -- giới thiệu ngắn
     created_at DATETIME DEFAULT GETDATE()
 );
