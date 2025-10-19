@@ -6,11 +6,14 @@ const db = new sqlite3.Database('./database.db', (err) => {
 });
 
 db.serialize(() => {
-  db.run(`CREATE TABLE IF NOT EXISTS movies_info (
+  db.run('DROP TABLE IF EXISTS movies_info');
+  db.run(`CREATE TABLE movies_info (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
+    title TEXT NOT NULL,
     genre TEXT,
-    year INTEGER
+    poster_url TEXT,
+    synopsis TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )`);
 });
 
