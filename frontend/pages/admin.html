@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Quản lý phim - Admin</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <header>
+    <h1>🎬 QUẢN LÝ PHIM - ADMIN</h1>
+    <nav>
+      <a href="/">TRANG CHỦ</a>
+      <div id="auth-section">
+        <!-- Will be updated by JS -->
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="admin-section">
+      <h2>Thêm phim mới</h2>
+      <form id="add-movie-form">
+        <label for="title">Tên phim:</label>
+        <input type="text" id="title" required>
+
+        <label for="genre">Thể loại:</label>
+        <input type="text" id="genre" placeholder="Ví dụ: Hành động, Viễn tưởng">
+
+        <label for="poster_url">URL Poster:</label>
+        <input type="text" id="poster_url" placeholder="Link ảnh poster">
+
+        <label for="duration">Thời lượng (phút):</label>
+        <input type="number" id="duration" placeholder="Ví dụ: 120">
+
+        <label for="director">Đạo diễn:</label>
+        <input type="text" id="director" placeholder="Tên đạo diễn">
+
+        <label for="actors">Diễn viên:</label>
+        <input type="text" id="actors" placeholder="Danh sách diễn viên chính">
+
+        <label for="trailer_url">Link Trailer (YouTube):</label>
+        <input type="text" id="trailer_url" placeholder="Ví dụ: https://www.youtube.com/embed/VIDEO_ID">
+
+        <label for="synopsis">Mô tả:</label>
+        <textarea id="synopsis" placeholder="Mô tả nội dung phim"></textarea>
+
+        <button type="submit">Thêm phim</button>
+      </form>
+
+      <h2>Danh sách phim</h2>
+      <div id="movies-list"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Huy Cinema. All rights reserved.</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

@@ -10,10 +10,12 @@
   <header>
     <h1>🎬 HỆ THỐNG ĐẶT VÉ XEM PHIM</h1>
     <nav>
-      <a href="#">TRANG CHỦ</a>
+      <a href="/">TRANG CHỦ</a>
       <a href="#">PHIM ĐANG CHIẾU</a>
       <a href="#">PHIM SẮP CHIẾU</a>
-      <a href="pages/login.html">ĐĂNG NHẬP</a>
+      <div id="auth-section">
+        <a href="/pages/login.html">ĐĂNG NHẬP</a>
+      </div>
     </nav>
     <form class="search-bar" action="#" method="GET">
       <input type="text" name="q" placeholder="Tìm kiếm tên phim, thể loại hoặc tác giả...">
@@ -25,42 +27,41 @@
     <section class="movie-list">
       <h1 style="text-align: center;">PHIM ĐANG CHIẾU</h1>
       <div class="movie-row">
-        <div class="movie-card">
+        <div class="movie-card" onclick="viewShowtimes(1)" data-tooltip="Click để đặt vé">
         <img src="assets/images/posterpayof-1556374037-66.jpg" alt="Poster phim">
         <h3>Avengers: Endgame</h3>
         <p>Thể loại: Hành động, Viễn tưởng</p>
-        <a href="https://www.youtube.com/watch?v=BD6PoZJdt_M" target="_blank" class="trailer-btn">🎬 Xem trailer</a>
-        <button>Đặt vé</button>
+        <button onclick="viewShowtimes(1)" style="display: none;">Đặt vé</button>
       </div>
-      <div class="movie-card">
+      <div class="movie-card" onclick="viewShowtimes(1)" data-tooltip="Click để đặt vé">
         <img src="assets/images/posterpayof-1556374037-66.jpg" alt="Poster phim">
         <h3>Avengers: Endgame</h3>
         <p>Thể loại: Hành động, Viễn tưởng</p>
-        <button>Đặt vé</button>
+        <button onclick="viewShowtimes(1)" style="display: none;">Đặt vé</button>
       </div>
-      <div class="movie-card">
+      <div class="movie-card" onclick="viewShowtimes(1)" data-tooltip="Click để đặt vé">
         <img src="assets/images/posterpayof-1556374037-66.jpg" alt="Poster phim">
         <h3>Avengers: Endgame</h3>
         <p>Thể loại: Hành động, Viễn tưởng</p>
-        <button>Đặt vé</button>
+        <button onclick="viewShowtimes(1)" style="display: none;">Đặt vé</button>
       </div>
-      <div class="movie-card">
+      <div class="movie-card" onclick="viewShowtimes(1)" data-tooltip="Click để đặt vé">
         <img src="assets/images/posterpayof-1556374037-66.jpg" alt="Poster phim">
         <h3>Avengers: Endgame</h3>
         <p>Thể loại: Hành động, Viễn tưởng</p>
-        <button>Đặt vé</button>
+        <button onclick="viewShowtimes(1)" style="display: none;">Đặt vé</button>
       </div>
-      <div class="movie-card">
+      <div class="movie-card" onclick="viewShowtimes(1)" data-tooltip="Click để đặt vé">
         <img src="assets/images/posterpayof-1556374037-66.jpg" alt="Poster phim">
         <h3>Avengers: Endgame</h3>
         <p>Thể loại: Hành động, Viễn tưởng</p>
-        <button>Đặt vé</button>
+        <button onclick="viewShowtimes(1)" style="display: none;">Đặt vé</button>
       </div>
-      <div class="movie-card">
+      <div class="movie-card" onclick="viewShowtimes(1)" data-tooltip="Click để đặt vé">
         <img src="assets/images/posterpayof-1556374037-66.jpg" alt="Poster phim">
         <h3>Avengers: Endgame</h3>
         <p>Thể loại: Hành động, Viễn tưởng</p>
-        <button>Đặt vé</button>
+        <button onclick="viewShowtimes(1)" style="display: none;">Đặt vé</button>
       </div>
       <!-- Thêm nhiều phim khác -->
     </section>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đặt vé - Huy</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <header>
+    <h1>🎬 ĐẶT VÉ XEM PHIM</h1>
+    <nav>
+      <a href="/">TRANG CHỦ</a>
+      <div id="auth-section">
+        <!-- Will be updated by JS -->
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="movie-info-section">
+      <div class="movie-details">
+        <div class="movie-poster">
+          <img id="movie-poster" src="" alt="Poster phim">
+        </div>
+        <div class="movie-content">
+          <h1 id="movie-title">Tên phim</h1>
+          <p id="movie-genre">Thể loại: ...</p>
+          <p id="movie-duration">Thời lượng: ...</p>
+          <p id="movie-director">Đạo diễn: ...</p>
+          <p id="movie-actors">Diễn viên: ...</p>
+          <p id="movie-synopsis">Mô tả: ...</p>
+        </div>
+      </div>
+      <div class="movie-trailer">
+        <h3>Trailer</h3>
+        <div id="trailer-container">
+          <iframe id="movie-trailer" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="booking-section">
+      <h2>Chọn suất chiếu</h2>
+      <div id="showtimes"></div>
+      <div id="seats" style="display: none;">
+        <h3>Chọn ghế</h3>
+        <div id="seat-grid"></div>
+        <button id="book-btn" style="display: none;">Đặt vé</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Huy Cinema. All rights reserved.</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/booking.js"></script>
+</body>
+</html>
