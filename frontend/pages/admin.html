@@ -11,6 +11,9 @@
     <h1>🎬 QUẢN LÝ PHIM - ADMIN</h1>
     <nav>
       <a href="/">TRANG CHỦ</a>
+      <a href="#movies-section">QUẢN LÝ PHIM</a>
+      <a href="#showtimes-section">QUẢN LÝ SUẤT CHIẾU</a>
+      <a href="#seats-section">QUẢN LÝ GHẾ NGỒI</a>
       <div id="auth-section">
         <!-- Will be updated by JS -->
       </div>
@@ -18,7 +21,7 @@
   </header>
 
   <main>
-    <section class="admin-section">
+    <section class="admin-section" id="movies-section">
       <h2>Thêm phim mới</h2>
       <form id="add-movie-form">
         <label for="title">Tên phim:</label>
@@ -50,6 +53,60 @@
 
       <h2>Danh sách phim</h2>
       <div id="movies-list"></div>
+    </section>
+
+    <!-- New Showtimes Section -->
+    <section class="admin-section" id="showtimes-section">
+      <h2>Thêm suất chiếu mới</h2>
+      <form id="add-showtime-form">
+        <label for="showtime-movie-id">Chọn phim:</label>
+        <select id="showtime-movie-id" required>
+          <option value="">-- Chọn phim --</option>
+        </select>
+
+        <label for="theater">Rạp chiếu:</label>
+        <input type="text" id="theater" placeholder="Ví dụ: Rạp 1, Rạp 2" required>
+
+        <label for="show-date">Ngày chiếu:</label>
+        <input type="date" id="show-date" required>
+
+        <label for="show-time">Giờ chiếu:</label>
+        <input type="time" id="show-time" required>
+
+        <label for="price">Giá vé (VND):</label>
+        <input type="number" id="price" placeholder="Ví dụ: 75000" required>
+
+        <button type="submit">Thêm suất chiếu</button>
+      </form>
+
+      <h2>Danh sách suất chiếu</h2>
+      <div id="showtimes-list"></div>
+    </section>
+
+    <!-- New Seats Section -->
+    <section class="admin-section" id="seats-section">
+      <h2>Thêm ghế ngồi cho suất chiếu</h2>
+      <form id="add-seats-form">
+        <label for="seats-showtime-id">Chọn suất chiếu:</label>
+        <select id="seats-showtime-id" required>
+          <option value="">-- Chọn suất chiếu --</option>
+        </select>
+
+        <label for="seat-prefix">Ký tự hàng ghế:</label>
+        <input type="text" id="seat-prefix" placeholder="Ví dụ: A, B, C" maxlength="1" required>
+
+        <label for="seat-count">Số lượng ghế:</label>
+        <input type="number" id="seat-count" placeholder="Ví dụ: 10" min="1" max="50" required>
+
+        <button type="submit">Tạo ghế</button>
+      </form>
+
+      <h2>Danh sách ghế ngồi theo suất chiếu</h2>
+      <label for="view-seats-showtime">Chọn suất chiếu để xem:</label>
+      <select id="view-seats-showtime">
+        <option value="">-- Chọn suất chiếu --</option>
+      </select>
+      <div id="seats-list"></div>
     </section>
   </main>
 

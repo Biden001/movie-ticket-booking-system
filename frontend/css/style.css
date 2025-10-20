@@ -607,3 +607,36 @@ footer {
   }
 }
 
+/* Smooth scroll for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Admin section spacing */
+.admin-section {
+  margin-bottom: 50px;
+  padding-top: 20px;
+}
+
+.admin-section:target {
+  padding-top: 80px;
+  margin-top: -80px;
+}
+
+/* Showtime and seat items */
+#showtimes-list,
+#seats-list {
+  margin-top: 20px;
+}
+
+/* Seat status colors */
+.seat.available {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.seat.booked {
+  background-color: #f44336;
+  color: white;
+}
+

@@ -98,14 +98,17 @@ function updateAuthSection() {
   }
   const user = JSON.parse(localStorage.getItem('user'));
   if (user) {
+    const adminLink = user.is_admin ? `<a href="/pages/admin.html" class="nav-admin-link">QUẢN TRỊ</a>` : '';
     authSection.innerHTML = `
+      ${adminLink}
       <div class="user-menu">
         <img src="/assets/images/user-icon.png" alt="User Icon" class="user-icon">
         <span>${user.username}</span>
         <div class="dropdown">
           <ul>
-            <li><a href="#" onclick="logout()">Đăng xuất</a></li>
+            ${user.is_admin ? '<li><a href="/pages/admin.html">Trang quản trị</a></li>' : ''}
             <li><a href="/pages/account.html">Thông tin tài khoản</a></li>
+            <li><a href="#" onclick="logout()">Đăng xuất</a></li>
           </ul>
         </div>
       </div>
@@ -131,26 +134,4 @@ document.addEventListener('DOMContentLoaded', () => {
   if (registerForm) {
     registerForm.addEventListener('submit', handleRegister);
   }
-});
-
-// Fix ReferenceError: app is not defined
-// Ensure app is defined properly
-const app = {}; // Define app if needed
-
-app.post('/register', (req, res) => {
-  console.log('Dữ liệu nhận được:', req.body); // Log dữ liệu nhận được
-  const { username, password } = req.body;
-  if (!username || !password) {
-    return res.status(400).json({ error: 'Username và password là bắt buộc' });
-  }
-  db.run('INSERT INTO users (username, password) VALUES (?, ?)', [username, password], function(err) {
-    if (err) {
-      console.error('Lỗi khi thêm user:', err); // Log lỗi
-      if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-        return res.status(409).json({ error: 'Username đã tồn tại' });
-      }
-      return res.status(500).json({ error: err.message });
-    }
-    res.json({ message: 'Đăng ký thành công', user: { id: this.lastID, username, is_admin: 0 } });
-  });
 });

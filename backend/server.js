@@ -19,6 +19,141 @@ app.use((req, res, next) => {
   }
 });
 
+// Admin routes
+app.get('/admin/movies', (req, res) => {
+  // Simple auth check - in real app, use JWT or session
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  db.all('SELECT * FROM movies_info', [], (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json({ movies: rows });
+  });
+});
+
+app.post('/admin/movies', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  const { title, genre, poster_url, duration, director, actors, trailer_url, synopsis } = req.body;
+  if (!title) {
+    return res.status(400).json({ error: 'Title là bắt buộc' });
+  }
+  db.run('INSERT INTO movies_info (title, genre, poster_url, duration, director, actors, trailer_url, synopsis) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [title, genre, poster_url, duration, director, actors, trailer_url, synopsis], function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: 'Phim đã được thêm', movie: { id: this.lastID, title, genre, poster_url, duration, director, actors, trailer_url, synopsis } });
+  });
+});
+
+app.put('/admin/movies/:id', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  const { id } = req.params;
+  const { title, genre, poster_url, duration, director, actors, trailer_url, synopsis } = req.body;
+  db.run('UPDATE movies_info SET title = ?, genre = ?, poster_url = ?, duration = ?, director = ?, actors = ?, trailer_url = ?, synopsis = ? WHERE id = ?', [title, genre, poster_url, duration, director, actors, trailer_url, synopsis, id], function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: 'Phim đã được cập nhật' });
+  });
+});
+
+app.delete('/admin/movies/:id', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  const { id } = req.params;
+  db.run('DELETE FROM movies_info WHERE id = ?', [id], function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: 'Phim đã được xóa' });
+  });
+});
+
+// Admin showtimes routes
+app.get('/admin/showtimes', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  db.all(`
+    SELECT s.*, m.title as movie_title 
+    FROM showtimes s 
+    LEFT JOIN movies_info m ON s.movie_id = m.id
+    ORDER BY s.show_date DESC, s.show_time DESC
+  `, [], (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json({ showtimes: rows });
+  });
+});
+
+app.post('/admin/showtimes', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  const { movie_id, theater, show_date, show_time, price } = req.body;
+  if (!movie_id || !theater || !show_date || !show_time || !price) {
+    return res.status(400).json({ error: 'Tất cả các trường là bắt buộc' });
+  }
+  db.run('INSERT INTO showtimes (movie_id, theater, show_date, show_time, price) VALUES (?, ?, ?, ?, ?)', 
+    [movie_id, theater, show_date, show_time, price], function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: 'Suất chiếu đã được thêm', showtime: { id: this.lastID, movie_id, theater, show_date, show_time, price } });
+  });
+});
+
+app.delete('/admin/showtimes/:id', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  const { id } = req.params;
+  db.run('DELETE FROM showtimes WHERE id = ?', [id], function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: 'Suất chiếu đã được xóa' });
+  });
+});
+
+// Admin seats routes
+app.post('/admin/seats', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  const { showtime_id, seat_prefix, seat_count } = req.body;
+  if (!showtime_id || !seat_prefix || !seat_count) {
+    return res.status(400).json({ error: 'Tất cả các trường là bắt buộc' });
+  }
+  
+  // Insert multiple seats
+  const stmt = db.prepare('INSERT INTO seats (showtime_id, seat_number, status) VALUES (?, ?, ?)');
+  for (let i = 1; i <= seat_count; i++) {
+    stmt.run([showtime_id, `${seat_prefix}${i}`, 'available']);
+  }
+  stmt.finalize();
+  
+  res.json({ message: `Đã tạo ${seat_count} ghế cho suất chiếu` });
+});
+
 // Serve static files from frontend directory
 app.use(express.static('../frontend'));
 
@@ -149,6 +284,152 @@ app.delete('/admin/movies/:id', (req, res) => {
     }
     res.json({ message: 'Phim đã được xóa' });
   });
+});
+
+// Admin showtimes routes
+app.get('/admin/showtimes', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  db.all(`
+    SELECT s.*, m.title as movie_title 
+    FROM showtimes s 
+    LEFT JOIN movies_info m ON s.movie_id = m.id
+    ORDER BY s.show_date DESC, s.show_time DESC
+  `, [], (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json({ showtimes: rows });
+  });
+});
+
+app.post('/admin/showtimes', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  const { movie_id, theater, show_date, show_time, price } = req.body;
+  if (!movie_id || !theater || !show_date || !show_time || !price) {
+    return res.status(400).json({ error: 'Tất cả các trường là bắt buộc' });
+  }
+  db.run('INSERT INTO showtimes (movie_id, theater, show_date, show_time, price) VALUES (?, ?, ?, ?, ?)', 
+    [movie_id, theater, show_date, show_time, price], function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: 'Suất chiếu đã được thêm', showtime: { id: this.lastID, movie_id, theater, show_date, show_time, price } });
+  });
+});
+
+app.delete('/admin/showtimes/:id', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  const { id } = req.params;
+  db.run('DELETE FROM showtimes WHERE id = ?', [id], function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: 'Suất chiếu đã được xóa' });
+  });
+});
+
+// Admin seats routes
+app.post('/admin/seats', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  const { showtime_id, seat_prefix, seat_count } = req.body;
+  if (!showtime_id || !seat_prefix || !seat_count) {
+    return res.status(400).json({ error: 'Tất cả các trường là bắt buộc' });
+  }
+  
+  // Insert multiple seats
+  const stmt = db.prepare('INSERT INTO seats (showtime_id, seat_number, status) VALUES (?, ?, ?)');
+  for (let i = 1; i <= seat_count; i++) {
+    stmt.run([showtime_id, `${seat_prefix}${i}`, 'available']);
+  }
+  stmt.finalize();
+  
+  res.json({ message: `Đã tạo ${seat_count} ghế cho suất chiếu` });
+});
+
+// Get showtimes for a movie
+app.get('/admin/showtimes', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  db.all(`
+    SELECT s.*, m.title as movie_title 
+    FROM showtimes s 
+    LEFT JOIN movies_info m ON s.movie_id = m.id
+    ORDER BY s.show_date DESC, s.show_time DESC
+  `, [], (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json({ showtimes: rows });
+  });
+});
+
+app.post('/admin/showtimes', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  const { movie_id, theater, show_date, show_time, price } = req.body;
+  if (!movie_id || !theater || !show_date || !show_time || !price) {
+    return res.status(400).json({ error: 'Tất cả các trường là bắt buộc' });
+  }
+  db.run('INSERT INTO showtimes (movie_id, theater, show_date, show_time, price) VALUES (?, ?, ?, ?, ?)', 
+    [movie_id, theater, show_date, show_time, price], function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: 'Suất chiếu đã được thêm', showtime: { id: this.lastID, movie_id, theater, show_date, show_time, price } });
+  });
+});
+
+app.delete('/admin/showtimes/:id', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  const { id } = req.params;
+  db.run('DELETE FROM showtimes WHERE id = ?', [id], function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: 'Suất chiếu đã được xóa' });
+  });
+});
+
+// Admin seats routes
+app.post('/admin/seats', (req, res) => {
+  const user = JSON.parse(req.headers['user'] || 'null');
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: 'Không có quyền truy cập' });
+  }
+  const { showtime_id, seat_prefix, seat_count } = req.body;
+  if (!showtime_id || !seat_prefix || !seat_count) {
+    return res.status(400).json({ error: 'Tất cả các trường là bắt buộc' });
+  }
+  
+  // Insert multiple seats
+  const stmt = db.prepare('INSERT INTO seats (showtime_id, seat_number, status) VALUES (?, ?, ?)');
+  for (let i = 1; i <= seat_count; i++) {
+    stmt.run([showtime_id, `${seat_prefix}${i}`, 'available']);
+  }
+  stmt.finalize();
+  
+  res.json({ message: `Đã tạo ${seat_count} ghế cho suất chiếu` });
 });
 
 // Get showtimes for a movie
