@@ -1,25 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Đặt vé xem phim - Huy</title>
+  <title>Đăng nhập - Huy Cinema</title>
   <link rel="stylesheet" href="../css/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+  <header>
+    <nav>
+      <h1>🎬 HUY CINEMA</h1>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="/">TRANG CHỦ</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
     <div class="login-container">
-        <h2>Đăng nhập</h2>
-        <form id="loginForm">
-            <label for="username">Tên đăng nhập:</label>
-            <input type="text" id="username" name="username" required>
+      <h2>🔐 Đăng nhập</h2>
+      <form id="loginForm">
+        <label for="username">Tên đăng nhập</label>
+        <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required>
 
-            <label for="password">Mật khẩu:</label>
-            <input type="password" id="password" name="password" required>
+        <label for="password">Mật khẩu</label>
+        <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
 
-            <button type="submit">Đăng nhập</button>
-        </form>
-        <p>Chưa có tài khoản? <a href="/pages/register.html">Đăng ký</a></p>
+        <button type="submit">
+          <i class="fas fa-sign-in-alt"></i> Đăng nhập
+        </button>
+      </form>
+      <p>Chưa có tài khoản? <a href="/pages/register.html">Đăng ký ngay</a></p>
     </div>
-    <script src="/js/main.js"></script>
+  </main>
+
+  <footer>
+    <p>© 2025 Huy Cinema. All rights reserved.</p>
+  </footer>
+
+  <script src="/js/main.js"></script>
 </body>
 </html>

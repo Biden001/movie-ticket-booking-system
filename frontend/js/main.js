@@ -1,24 +1,33 @@
 // Fetch and display movies on the homepage
 async function loadMovies() {
+  const container = document.getElementById('movies-container') || document.querySelector('.movie-row');
+  if (!container) return;
+  
   try {
     const response = await fetch('/movies');
     const data = await response.json();
-    const movieList = document.querySelector('.movie-row');
-    movieList.innerHTML = '';
+    container.innerHTML = '';
+    
+    if (data.movies.length === 0) {
+      container.innerHTML = '<p style="text-align: center; color: var(--text-secondary); grid-column: 1/-1;">Chưa có phim nào. Hãy thêm phim từ trang quản trị.</p>';
+      return;
+    }
+    
     data.movies.forEach(movie => {
       const card = document.createElement('div');
       card.className = 'movie-card';
       card.setAttribute('data-tooltip', 'Click để đặt vé');
       card.onclick = () => viewShowtimes(movie.id);
       card.innerHTML = `
-        <img src="${movie.poster_url || 'assets/images/default.jpg'}" alt="Poster phim">
+        <img src="${movie.poster_url || 'assets/images/default.jpg'}" alt="${movie.title}" onerror="this.src='assets/images/default.jpg'">
         <h3>${movie.title}</h3>
-        <p>Thể loại: ${movie.genre}</p>
+        <p>${movie.genre || 'Chưa cập nhật thể loại'}</p>
       `;
-      movieList.appendChild(card);
+      container.appendChild(card);
     });
   } catch (error) {
     console.error('Error loading movies:', error);
+    container.innerHTML = '<p style="text-align: center; color: var(--danger);">Lỗi tải dữ liệu phim</p>';
   }
 }
 

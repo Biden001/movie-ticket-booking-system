@@ -2,73 +2,43 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Đặt vé xem phim - Huy</title>
+  <title>Huy Cinema - Đặt vé xem phim online</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
   <header>
-    <h1>🎬 HỆ THỐNG ĐẶT VÉ XEM PHIM</h1>
     <nav>
-      <a href="/">TRANG CHỦ</a>
-      <a href="#">PHIM ĐANG CHIẾU</a>
-      <a href="#">PHIM SẮP CHIẾU</a>
-      <div id="auth-section">
-        <a href="/pages/login.html">ĐĂNG NHẬP</a>
+      <h1>🎬 HUY CINEMA</h1>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="/">TRANG CHỦ</a>
+        <a href="#now-showing">ĐANG CHIẾU</a>
+        <a href="#coming-soon">SẮP CHIẾU</a>
+        <div id="auth-section">
+          <a href="/pages/login.html">ĐĂNG NHẬP</a>
+        </div>
       </div>
     </nav>
-    <form class="search-bar" action="#" method="GET">
-      <input type="text" name="q" placeholder="Tìm kiếm tên phim, thể loại hoặc tác giả...">
-      <button type="submit">Tìm kiếm</button>
-    </form>
   </header>
 
+  <form class="search-bar" action="#" method="GET">
+    <input type="text" name="q" placeholder="🔍 Tìm kiếm phim, thể loại, diễn viên...">
+    <button type="submit">Tìm kiếm</button>
+  </form>
+
   <main>
-    <section class="movie-list">
-      <h1 style="text-align: center;">PHIM ĐANG CHIẾU</h1>
-      <div class="movie-row">
-        <div class="movie-card" onclick="viewShowtimes(1)" data-tooltip="Click để đặt vé">
-        <img src="assets/images/posterpayof-1556374037-66.jpg" alt="Poster phim">
-        <h3>Avengers: Endgame</h3>
-        <p>Thể loại: Hành động, Viễn tưởng</p>
-        <button onclick="viewShowtimes(1)" style="display: none;">Đặt vé</button>
+    <section class="movie-list" id="now-showing">
+      <h1>🎬 PHIM ĐANG CHIẾU</h1>
+      <div class="movie-row" id="movies-container">
+        <!-- Movies will be loaded dynamically -->
+        <div class="loading"></div>
       </div>
-      <div class="movie-card" onclick="viewShowtimes(1)" data-tooltip="Click để đặt vé">
-        <img src="assets/images/posterpayof-1556374037-66.jpg" alt="Poster phim">
-        <h3>Avengers: Endgame</h3>
-        <p>Thể loại: Hành động, Viễn tưởng</p>
-        <button onclick="viewShowtimes(1)" style="display: none;">Đặt vé</button>
-      </div>
-      <div class="movie-card" onclick="viewShowtimes(1)" data-tooltip="Click để đặt vé">
-        <img src="assets/images/posterpayof-1556374037-66.jpg" alt="Poster phim">
-        <h3>Avengers: Endgame</h3>
-        <p>Thể loại: Hành động, Viễn tưởng</p>
-        <button onclick="viewShowtimes(1)" style="display: none;">Đặt vé</button>
-      </div>
-      <div class="movie-card" onclick="viewShowtimes(1)" data-tooltip="Click để đặt vé">
-        <img src="assets/images/posterpayof-1556374037-66.jpg" alt="Poster phim">
-        <h3>Avengers: Endgame</h3>
-        <p>Thể loại: Hành động, Viễn tưởng</p>
-        <button onclick="viewShowtimes(1)" style="display: none;">Đặt vé</button>
-      </div>
-      <div class="movie-card" onclick="viewShowtimes(1)" data-tooltip="Click để đặt vé">
-        <img src="assets/images/posterpayof-1556374037-66.jpg" alt="Poster phim">
-        <h3>Avengers: Endgame</h3>
-        <p>Thể loại: Hành động, Viễn tưởng</p>
-        <button onclick="viewShowtimes(1)" style="display: none;">Đặt vé</button>
-      </div>
-      <div class="movie-card" onclick="viewShowtimes(1)" data-tooltip="Click để đặt vé">
-        <img src="assets/images/posterpayof-1556374037-66.jpg" alt="Poster phim">
-        <h3>Avengers: Endgame</h3>
-        <p>Thể loại: Hành động, Viễn tưởng</p>
-        <button onclick="viewShowtimes(1)" style="display: none;">Đặt vé</button>
-      </div>
-      <!-- Thêm nhiều phim khác -->
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 Huy Cinema. All rights reserved.</p>
+    <p>© 2025 Huy Cinema. All rights reserved. | Hotline: 1900 1234</p>
   </footer>
 
   <script src="js/main.js"></script>

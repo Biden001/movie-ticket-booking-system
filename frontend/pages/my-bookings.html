@@ -8,24 +8,26 @@
 </head>
 <body>
   <header>
-    <h1>� VÉ CỦA TÔI</h1>
     <nav>
-      <a href="/">TRANG CHỦ</a>
-      <div id="auth-section">
-        <!-- Will be updated by JS -->
+      <h1>🎬 HUY CINEMA</h1>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="/">TRANG CHỦ</a>
+        <div id="auth-section"></div>
       </div>
     </nav>
   </header>
 
   <main>
     <section class="bookings-section">
-      <h2>Các vé đã đặt</h2>
-      <div id="bookings-list"></div>
+      <h2>🎟️ Vé đã đặt của bạn</h2>
+      <div id="bookings-list">
+        <div class="loading"></div>
+      </div>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 Huy Cinema. All rights reserved.</p>
+    <p>© 2025 Huy Cinema. All rights reserved.</p>
   </footer>
 
   <script src="../js/main.js"></script>
