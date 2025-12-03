@@ -102,28 +102,31 @@ function logout() {
 function updateAuthSection() {
   const authSection = document.getElementById('auth-section');
   if (!authSection) {
-    console.warn('auth-section element not found'); // Log warning if element is missing
+    console.warn('auth-section element not found');
     return;
   }
   const user = JSON.parse(localStorage.getItem('user'));
   if (user) {
     const adminLink = user.is_admin ? `<a href="/pages/admin.html" class="nav-admin-link">QUẢN TRỊ</a>` : '';
+    // Lấy chữ cái đầu của username
+    const firstLetter = user.username.charAt(0).toUpperCase();
     authSection.innerHTML = `
       ${adminLink}
       <div class="user-menu">
-        <img src="/assets/images/user-icon.png" alt="User Icon" class="user-icon">
+        <div class="user-icon">${firstLetter}</div>
         <span>${user.username}</span>
         <div class="dropdown">
           <ul>
-            ${user.is_admin ? '<li><a href="/pages/admin.html">Trang quản trị</a></li>' : ''}
-            <li><a href="/pages/account.html">Thông tin tài khoản</a></li>
-            <li><a href="#" onclick="logout()">Đăng xuất</a></li>
+            ${user.is_admin ? '<li><a href="/pages/admin.html">⚙️ Trang quản trị</a></li>' : ''}
+            <li><a href="/pages/my-bookings.html">🎟️ Vé của tôi</a></li>
+            <li><a href="/pages/account.html">👤 Thông tin tài khoản</a></li>
+            <li><a href="#" onclick="logout(); return false;">🚪 Đăng xuất</a></li>
           </ul>
         </div>
       </div>
     `;
   } else {
-    authSection.innerHTML = `<a href='/pages/login.html'>Đăng nhập</a>`; // Ensure login button appears
+    authSection.innerHTML = `<a href='/pages/login.html'>ĐĂNG NHẬP</a>`;
   }
 }
 

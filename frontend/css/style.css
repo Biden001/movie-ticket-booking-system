@@ -149,6 +149,18 @@ nav > a:hover {
   height: 36px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--primary-color), #ff6b6b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.user-icon img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
   object-fit: cover;
 }
 
@@ -157,10 +169,23 @@ nav > a:hover {
   color: var(--text-primary);
 }
 
+/* Mũi tên dropdown */
+.user-menu::after {
+  content: '▼';
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin-left: 5px;
+  transition: var(--transition);
+}
+
+.user-menu:hover::after {
+  transform: rotate(180deg);
+}
+
 .dropdown {
   display: none;
   position: absolute;
-  top: calc(100% + 10px);
+  top: 100%; /* Không có khoảng cách */
   right: 0;
   background: var(--bg-card);
   border: 1px solid rgba(255,255,255,0.1);
@@ -169,6 +194,18 @@ nav > a:hover {
   box-shadow: var(--shadow);
   overflow: hidden;
   z-index: 1001;
+  padding-top: 10px; /* Thêm padding thay vì margin/gap */
+}
+
+/* Tạo vùng hover bridge để không bị mất dropdown */
+.dropdown::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: transparent;
 }
 
 .user-menu:hover .dropdown {
@@ -183,24 +220,35 @@ nav > a:hover {
 
 .dropdown ul {
   list-style: none;
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  overflow: hidden;
 }
 
 .dropdown ul li a {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding: 12px 20px;
   color: var(--text-secondary);
   font-size: 0.9rem;
   border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: var(--transition);
 }
 
 .dropdown ul li a:hover {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.08);
   color: var(--text-primary);
+  padding-left: 25px;
 }
 
 .dropdown ul li:last-child a {
   border-bottom: none;
   color: var(--primary-color);
+}
+
+.dropdown ul li:last-child a:hover {
+  background: rgba(229, 9, 20, 0.1);
 }
 
 /* ===== SEARCH BAR ===== */
@@ -602,6 +650,18 @@ main {
   background: var(--text-muted);
   color: var(--text-secondary);
   cursor: not-allowed;
+}
+
+.seat.held {
+  background: #ff9800;
+  color: white;
+  cursor: not-allowed;
+  animation: holdPulse 2s infinite;
+}
+
+@keyframes holdPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
 .seat.selected {
