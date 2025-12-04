@@ -44,7 +44,9 @@ async function loadMovieInfo(movieId) {
       
       const trailerUrl = movie.trailer_url || '';
       if (trailerUrl) {
-        document.getElementById('movie-trailer').src = trailerUrl;
+        // Chuyển link YouTube thành dạng embed
+        const embedUrl = convertToEmbedUrl(trailerUrl);
+        document.getElementById('movie-trailer').src = embedUrl;
       }
     }
   } catch (error) {
@@ -133,6 +135,7 @@ async function loadSeats(showtimeId) {
         selectedSeatId = seat.id;
         startCountdown(seat.remainingTime);
         document.getElementById('book-btn').style.display = 'block';
+        showCancelButton();
       } else {
         seatBtn.className = 'seat available';
         seatBtn.onclick = () => selectSeat(seat.id, seatBtn);
@@ -207,7 +210,9 @@ async function selectSeat(seatId, btn) {
       // Bắt đầu đếm ngược
       startCountdown(result.remainingTime);
       
+      // Hiển thị nút đặt vé và nút hủy
       document.getElementById('book-btn').style.display = 'block';
+      showCancelButton();
     } else {
       alert(result.error || 'Không thể giữ ghế');
       btn.disabled = false;
@@ -258,6 +263,12 @@ function stopCountdown() {
   const timerDiv = document.getElementById('countdown-timer');
   if (timerDiv) {
     timerDiv.remove();
+  }
+  
+  // Xóa nút hủy khi dừng countdown
+  const cancelBtn = document.getElementById('cancel-booking-btn');
+  if (cancelBtn) {
+    cancelBtn.remove();
   }
 }
 
@@ -462,7 +473,107 @@ function showSuccessModal(qrCode) {
   document.body.appendChild(modal);
 }
 
-// Auto refresh ghế mỗi 10 giây để cập nhật trạng thái
+function showCancelButton() {
+  // Kiểm tra nếu đã có nút hủy rồi thì không tạo nữa
+  if (document.getElementById('cancel-booking-btn')) {
+    return;
+  }
+  
+  const cancelBtn = document.createElement('button');
+  cancelBtn.id = 'cancel-booking-btn';
+  cancelBtn.textContent = '❌ Hủy đặt vé';
+  cancelBtn.style.cssText = `
+    position: fixed;
+    top: 200px;
+    right: 20px;
+    background: linear-gradient(135deg, #666, #888);
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: all 0.3s ease;
+  `;
+  
+  cancelBtn.onmouseover = () => {
+    cancelBtn.style.background = 'linear-gradient(135deg, #e50914, #ff6b6b)';
+  };
+  
+  cancelBtn.onmouseout = () => {
+    cancelBtn.style.background = 'linear-gradient(135deg, #666, #888)';
+  };
+  
+  cancelBtn.onclick = handleCancelBooking;
+  
+  document.body.appendChild(cancelBtn);
+}
+
+async function handleCancelBooking() {
+  if (!confirm('Bạn có chắc muốn hủy đặt vé này?')) {
+    return;
+  }
+  
+  if (selectedSeatId) {
+    // Gọi API release seat
+    await releaseSeat(selectedSeatId);
+    
+    // Dừng countdown
+    stopCountdown();
+    
+    // Reset trạng thái
+    selectedSeatId = null;
+    
+    // Ẩn nút đặt vé
+    document.getElementById('book-btn').style.display = 'none';
+    
+    // Refresh danh sách ghế
+    if (selectedShowtimeId) {
+      loadSeats(selectedShowtimeId);
+    }
+    
+    // Thông báo
+    showNotification('✅ Đã hủy đặt vé thành công');
+  }
+}
+
+/**
+ * ───────────────────────────────────────────────────────────────
+ * Chuyển link YouTube thành dạng embed
+ * ───────────────────────────────────────────────────────────────
+ * VD: https://www.youtube.com/watch?v=abc123
+ *  → https://www.youtube.com/embed/abc123
+ * VD: https://youtu.be/abc123
+ *  → https://www.youtube.com/embed/abc123
+ */
+function convertToEmbedUrl(url) {
+  if (!url) return '';
+  
+  // Nếu đã là dạng embed rồi → trả về luôn
+  if (url.includes('/embed/')) {
+    return url;
+  }
+  
+  // Xử lý link dạng: https://www.youtube.com/watch?v=VIDEO_ID
+  let match = url.match(/[?&]v=([^&]+)/);
+  if (match) {
+    return `https://www.youtube.com/embed/${match[1]}`;
+  }
+  
+  // Xử lý link dạng: https://youtu.be/VIDEO_ID
+  match = url.match(/youtu\.be\/([^?]+)/);
+  if (match) {
+    return `https://www.youtube.com/embed/${match[1]}`;
+  }
+  
+  // Nếu không phải YouTube → trả về link gốc
+  return url;
+}
+
+// Auto refresh ghế mỗi 10 giây
 setInterval(() => {
   if (selectedShowtimeId && document.getElementById('seats').style.display !== 'none') {
     // Chỉ refresh nếu không đang chọn ghế
